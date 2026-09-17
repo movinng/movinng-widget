@@ -183,6 +183,13 @@ async function fetchMatchStatsBatch(playerId, matches) {
     };
 }
 
+app.get('/api/test', (req, res) => {
+    res.json({
+        working: true,
+        message: 'Express is running on Vercel'
+    });
+});
+
 app.get('/api/stats/:nickname', async (req, res) => {
     const { nickname } = req.params;
 
