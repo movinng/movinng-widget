@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faceit Widget Generator</title>
+    <link rel="stylesheet" href="styles.css?v=wlfix6">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bytesized&family=Doto&display=swap" rel="stylesheet">
+</head>
+
+<style>
+    body {
+        background-image: url('assets/mirage.jpg');  
+    }
+</style>    
+
+<body>
+
+    <!-- Main-->
+    <div class="main-homepage">
+        <div style="display: flex; align-items: center;">
+            <div>
+                <img class="image-glow" id="level-pic" alt="" loading="lazy" width="64" height="64" decoding="async" src="https://faceit-widget.pages.dev/assets/icons/skill_level/skill_level_0.svg" style="margin-right: 20px; color: white;">
+            </div>
+            <div>
+                <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                    <a class="noline text-glow text-colour-white text-center header font-inter" id="nicknameValue" style="font-weight: 500 !important;">Username</a>
+                    <img id="country-flag" style="height: 16px; width: 24px; margin-left: 8px; vertical-align: middle; display: none; border-radius: 2px;" alt="Country Flag">
+                </div>
+                
+                <div>
+                    <a class="noline subtext text-glow-large text-colour-white font-inter" id="eloValue" style="font-weight: 400 !important;">***</a>
+                    <a class="noline subtext text-glow-small text-colour-white font-inter" id="eloValue" style="font-weight: 400 !important;"> Elo </a>
+                        <span class="subtext text-glow-small text-colour-white font-inter"> | </span>
+                    <a class="noline subtext text-glow-large text-colour-white font-inter" id="kdValue" style="font-weight: 400 !important;">***</a>
+                        <span class="subtext text-glow-small text-colour-white font-inter" style="font-weight: 400 !important;"> K/D </span>
+                        <span class="subtext text-glow-small text-colour-white font-inter"> | </span>
+                    <a class="noline subtext text-glow-large text-colour-white font-inter" id="adrValue" style="font-weight: 400 !important;">***</a>
+                        <span class="subtext text-glow-small text-colour-white font-inter" style="font-weight: 400 !important;"> ADR </span>
+                        <span class="subtext text-glow-small text-colour-white font-inter"> | </span>
+                    <a class="noline subtext text-glow-large text-colour-white font-inter" id="avgKillsValue" style="font-weight: 400 !important;">***</a>
+                        <span class="subtext text-glow-small text-colour-white font-inter" style="font-weight: 400 !important;"> Avg </span>
+                </div>
+                
+                <div class="recent-games hidden" id="recentGamesRow" style="margin-top: 10px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <h2 class="text-colour-white font-inter text-glow header">Config</h2>
+
+        <input
+          class="font-inter input-box"
+          id="faceit-nickname"
+          placeholder="Faceit Username"
+          type="text"
+        />
+
+        <hr class="divider-clear">
+
+        <button class="link-box" id="get-link-btn">Open Link</button>
+
+        <hr class="divider">
+
+        <div>
+            <label class="toggle-row font-inter text-colour-white" for="recent-games-toggle">
+                <span>Show last 5 games</span>
+                <input id="recent-games-toggle" type="checkbox">
+                <span class="toggle-switch"></span>
+            </label>
+        </div>
+        
+        <div>
+            <label class="toggle-row font-inter text-colour-white" for="country-flag-toggle">
+                <span>Show country flag</span>
+                <input id="country-flag-toggle" type="checkbox">
+                <span class="toggle-switch"></span>
+            </label>
+        </div>
+
+        <hr class="divider">
+
+        <span class="setting-label font-inter text-colour-white">Font</span>
+        <div class="font-picker" id="font-picker">
+            <button class="font-btn active" data-font="Bytesized" style="font-family: 'Bytesized', sans-serif;">Bytesized</button>
+            <button class="font-btn" data-font="Doto" style="font-family: 'Doto', sans-serif;">Doto</button>
+            <button class="font-btn" data-font="Inter" style="font-family: 'Inter', sans-serif;">Inter</button>
+        </div>
+    </div>
+
+<script>
+    // --- Element References ---
+    const nicknameInput = document.getElementById('faceit-nickname');
+    const nicknameDisplay = document.getElementById('nicknameValue');
+    const eloDisplay = document.getElementById('eloValue');
+    const kdDisplay = document.getElementById('kdValue');
+    const adrDisplay = document.getElementById('adrValue');
+    const avgKillsDisplay = document.getElementById('avgKillsValue');
+    const levelPic = document.getElementById('level-pic');
+    const countryFlag = document.getElementById('country-flag');
+    const recentGamesRow = document.getElementById('recentGamesRow');
+    const recentGamesToggle = document.getElementById('recent-games-toggle');
+    const countryFlagToggle = document.getElementById('country-flag-toggle');
+    const getLinkBtn = document.getElementById('get-link-btn');
+
+    let recentGamesData = []; 
+
+    // --- Open Link Button Logic ---
+    getLinkBtn.addEventListener('click', () => {
+        const user = nicknameInput.value.trim();
+        if (!user) {
+            alert("Please enter a Faceit Username first.");
+            return;
+        }
+        
+        const recent = recentGamesToggle.checked;
+        const flag = countryFlagToggle.checked;
+        const activeFontBtn = document.querySelector('.font-btn.active');
+        const font = activeFontBtn ? activeFontBtn.getAttribute('data-font') : 'Bytesized';
+        
+        // Construct URL and open in new tab
+        const url = `user.html?user=${encodeURIComponent(user)}&recent=${recent}&flag=${flag}&font=${font}`;
+        window.open(url, '_blank');
+    });
+
+    // --- Username Submission (Enter Key & Blur/Click Off) ---
+    function handleFetchTrigger() {
+        const nickname = nicknameInput.value.trim();
+        if (nickname) {
+            fetchStats(nickname);
+        }
+    }
+
+    nicknameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); 
+            handleFetchTrigger();
+        }
+    });
+
+    nicknameInput.addEventListener('blur', handleFetchTrigger);
+
+    // --- Font Picker Logic (Only affects Username) ---
+    document.querySelectorAll('.font-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const fontName = btn.getAttribute('data-font');
+            nicknameDisplay.style.fontFamily = `'${fontName}', sans-serif`;
+        });
+    });
+
+    // --- Recent Games Toggle Logic ---
+    function renderRecentGames() {
+        recentGamesRow.innerHTML = ''; 
+        
+        if (recentGamesToggle.checked) {
+            recentGamesRow.classList.remove('hidden');
+            recentGamesRow.style.display = 'flex';
+            recentGamesRow.style.gap = '8px';
+            recentGamesRow.style.marginTop = '10px';
+
+            const last5 = recentGamesData.slice(-5).reverse();
+
+            last5.forEach(game => {
+                const gameDiv = document.createElement('div');
+                gameDiv.style.width = '24px';
+                gameDiv.style.height = '24px';
+                gameDiv.style.display = 'flex';
+                gameDiv.style.alignItems = 'center';
+                gameDiv.style.justifyContent = 'center';
+                gameDiv.style.borderRadius = '4px';
+                gameDiv.style.fontWeight = 'bold';
+                gameDiv.style.fontSize = '14px';
+                gameDiv.style.fontFamily = "'Inter', sans-serif";
+                
+                if (game.result === 'W') {
+                    gameDiv.style.background = '#4caf50';
+                    gameDiv.style.color = '#fff';
+                    gameDiv.innerText = 'W';
+                } else {
+                    gameDiv.style.background = '#f44336';
+                    gameDiv.style.color = '#fff';
+                    gameDiv.innerText = 'L';
+                }
+                
+                recentGamesRow.appendChild(gameDiv);
+            });
+        } else {
+            recentGamesRow.classList.add('hidden');
+            recentGamesRow.style.display = 'none';
+        }
+    }
+
+    recentGamesToggle.addEventListener('change', renderRecentGames);
+
+    // --- Country Flag Toggle Logic ---
+    countryFlagToggle.addEventListener('change', () => {
+        if (countryFlagToggle.checked && countryFlag.src) {
+            countryFlag.style.display = 'inline-block';
+        } else {
+            countryFlag.style.display = 'none';
+        }
+    });
+
+    // --- Fetch Stats from Backend ---
+    async function fetchStats(nickname) {
+        nicknameDisplay.innerText = "Loading...";
+        eloDisplay.innerText = "";
+        kdDisplay.innerText = "";
+        adrDisplay.innerText = "";
+        avgKillsDisplay.innerText = "";
+        countryFlag.style.display = 'none';
+        recentGamesData = [];
+        renderRecentGames();
+
+        try {
+            const response = await fetch(`/api/stats/${encodeURIComponent(nickname)}`);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to fetch stats');
+            }
+
+            nicknameDisplay.innerText = data.nickname;
+            eloDisplay.innerText = data.elo;
+            kdDisplay.innerText = data.kd;
+            adrDisplay.innerText = data.adr;
+            avgKillsDisplay.innerText = data.avgKills;
+
+            if (data.country) {
+                countryFlag.src = `https://flagcdn.com/24x18/${data.country.toLowerCase()}.png`;
+                countryFlag.alt = data.country;
+                
+                if (countryFlagToggle.checked) {
+                    countryFlag.style.display = 'inline-block';
+                }
+            }
+
+            if (data.isChallenger) {
+                levelPic.src = "assets/challanger.svg";
+            } else {
+                const level = data.level || 0;
+                levelPic.src = `https://faceit-widget.pages.dev/assets/icons/skill_level/skill_level_${level}.svg`;
+            }
+
+            recentGamesData = data.recentGames || [];
+            renderRecentGames();
+
+        } catch (error) {
+            nicknameDisplay.innerText = "Error";
+            eloDisplay.innerText = error.message;
+            kdDisplay.innerText = "";
+            adrDisplay.innerText = "";
+            avgKillsDisplay.innerText = "";
+            console.error("Error:", error);
+        }
+    }
+</script>
+
+</body>
+</html>
