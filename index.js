@@ -160,10 +160,12 @@ app.get('/api/stats/:nickname', async (req, res) => {
     }
 });
 
+// Only start the server if running locally
 if (!process.env.VERCEL) {
     app.listen(PORT, () => {
         console.log(`Server running on http://localhost:${PORT}`);
     });
 }
 
+// Export the app for Vercel Serverless Functions
 module.exports = app;
