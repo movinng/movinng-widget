@@ -1,0 +1,200 @@
+.text-glow {
+    color: #f9f9f9;
+    text-shadow: 0 0 5px #D9D9D9, 0 0 10px #D9D9D9, 0 0 15px #D9D9D9;
+}
+
+.text-glow-large {
+    color: #F9F9F9;
+    text-shadow: 0 0 5px #D9D9D9, 0 0 10px #D9D9D9, 0 0 15px #D9D9D9,0 0 17px #D9D9D9 ;
+}
+
+.text-glow-small {
+    color: #F9F9F9;
+    text-shadow: 0 0 5px #D9D9D9, 0 0 10px #D9D9D9;
+}
+
+.image-glow {
+  filter: drop-shadow(0 0 5px #000000)
+}
+
+.text-colour-white {
+    color: white;
+}
+
+.header {
+    font-size: 3rem;
+    font-weight: bold;        
+    line-height: .86;  
+}
+
+.subtext {
+  margin-top: 0;     
+  padding-top: -10;   
+  line-height: .2;  
+}
+
+.noline {
+    text-decoration: none;
+}
+
+.main-homepage {
+    background-color: rgba(13, 13, 13, 0.939);
+    border-radius: 2px;
+    border: 1px solid rgba(53, 53, 53, .23);
+    padding: 2%;
+    backdrop-filter: blur(23px);
+    text-decoration: none;
+}
+
+.divider {
+  margin: 15px 0;
+  border: none;
+  border-top: 1px solid #2b2b2b;
+  width: 100%;
+}
+
+.divider-clear {
+  margin: 15px 0;
+  border: none;
+  border-top: 1px solid #ffffff00;
+  width: 100%;
+}
+
+.font-doto {
+    font-family: "Doto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "ROND" 0;
+}
+
+.font-bytesized {
+  font-family: "Bytesized", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.font-inter {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    padding: 20px;
+    background-color: rgba(13, 13, 13, 0.67);
+    border: 1px solid rgba(53, 53, 53, .23);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(23px);
+    text-decoration: none;
+}
+
+.input-box {
+  background-color: #222;   
+  color: white;                
+  border: none;                
+  border-radius: 12px;        
+  padding: 10px 14px;          
+  font-size: 16px;             
+  outline: none;               
+  width: 100%;                 
+  box-sizing: border-box;      
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 5px #000000;
+}
+
+.input-box:hover {
+  background-color: #1e1e2f;      
+  box-shadow: 0 0 5px #434368, 0 0 10px #434368;
+}
+
+.input-box:focus {
+  background-color: #161622;      
+  box-shadow: 0 0 5px #1e1e2f, 0 0 10px #1e1e2f;
+}
+
+.link-box {
+  background-color: #222;   
+  color: white;                
+  border: none;                
+  border-radius: 12px;        
+  padding: 10px 14px;          
+  font-size: 16px;             
+  outline: none;               
+  width: 100%;                 
+  box-sizing: border-box;      
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 5px #000000;
+  cursor: pointer;
+}
+
+.link-box:hover {
+  background-color: #1e1e2f;      
+  box-shadow: 0 0 5px #434368, 0 0 10px #434368;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+}
+
+/* ── Font picker ─────────────────────────────────── */
+.setting-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #888;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.font-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.font-btn {
+  background-color: #222;
+  color: #ccc;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  box-shadow: 0 0 5px #000;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.font-btn:hover {
+  background-color: #1e1e2f;
+  box-shadow: 0 0 5px #434368, 0 0 10px #434368;
+  color: #fff;
+}
+
+.font-btn.active {
+  background-color: #1a1a2e;
+  border-color: #5a5a9a;
+  box-shadow: 0 0 6px #434368, 0 0 12px #2d2d5e;
+  color: #fff;
+}
+
+
+/* Adds space between the username and the Elo / K/D row */
+#nicknameValue {
+  display: inline-block;
+  margin-bottom: 14px;
+}
